@@ -4,18 +4,15 @@ import javax.swing.*;
 
 
 public class GameOfLife extends JFrame implements ActionListener {
-
     private static final Dimension MINIMUM_FRAME_SIZE = new Dimension(450, 450);
     private GameBoard gameBoard;
     private Thread game;
     private JButton play_b,stop_b,reset_b,instruction_b;
     private Container cont;
     GridBagConstraints c;
-    
 
 
     public static void main(String[] args) {
-        // Setup the swing specifics
         JFrame game = new GameOfLife();
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setTitle("Game of Life");
