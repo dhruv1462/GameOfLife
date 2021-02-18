@@ -14,6 +14,7 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
         addComponentListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
+        setBackground(Color.GRAY);
     }
 
     private void updateGrid() {
@@ -70,12 +71,12 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
         try {
             for (Point newPoint : point) {
                 // Draw new point
-                g.setColor(Color.blue);
+                g.setColor(Color.YELLOW);
                 g.fillRect(BLOCK_SIZE + (BLOCK_SIZE*newPoint.x), BLOCK_SIZE + (BLOCK_SIZE*newPoint.y), BLOCK_SIZE, BLOCK_SIZE);
             }
         } catch (ConcurrentModificationException cme) {}
         // Setup grid
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         for (int i=0; i<=gameBoardSize.width; i++) {
             g.drawLine(((i*BLOCK_SIZE)+BLOCK_SIZE), BLOCK_SIZE, (i*BLOCK_SIZE)+BLOCK_SIZE, BLOCK_SIZE + (BLOCK_SIZE*gameBoardSize.height));
         }
@@ -106,7 +107,7 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
         }
         else if(SwingUtilities.isRightMouseButton(e))
             removePoint(e);
-        }
+    }
     @Override
     public void mouseReleased(MouseEvent e) {
         // Mouse was released (user clicked)
