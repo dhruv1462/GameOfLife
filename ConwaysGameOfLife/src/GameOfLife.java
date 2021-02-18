@@ -11,8 +11,7 @@ public class GameOfLife extends JFrame implements ActionListener {
     private JButton play_b,stop_b,reset_b,instruction_b;
     private Container cont;
     GridBagConstraints c;
-    final static boolean shouldFill = true;
-    final static boolean shouldWeightX = true;
+    
 
 
     public static void main(String[] args) {
