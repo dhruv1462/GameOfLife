@@ -29,14 +29,14 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
         repaint();
     }
 
-    public void addPoint(int x, int y) {
+    private void addPoint(int x, int y) {
         if (!point.contains(new Point(x,y))) {
             point.add(new Point(x,y));
         }
         repaint();
     }
 
-    public void addPoint(MouseEvent me) {
+    private void addPoint(MouseEvent me) {
         int x = me.getPoint().x/BLOCK_SIZE-1;
         int y = me.getPoint().y/BLOCK_SIZE-1;
         if ((x >= 0) && (x < gameBoardSize.width) && (y >= 0) && (y < gameBoardSize.height)) {
@@ -44,13 +44,13 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
         }
     }
 
-    public void removePoint(int x, int y) {
+    private void removePoint(int x, int y) {
         if(point.contains(new Point(x,y))) {
             point.remove(new Point(x, y));
         }
         repaint();
     }
-    public void removePoint(MouseEvent me) {
+    private void removePoint(MouseEvent me) {
         int x = me.getPoint().x/BLOCK_SIZE-1;
         int y = me.getPoint().y/BLOCK_SIZE-1;
         if ((x >= 0) && (x < gameBoardSize.width) && (y >= 0) && (y < gameBoardSize.height)) {
@@ -59,7 +59,7 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
     }
 
 
-    public void resetBoard() {
+    protected void resetBoard() {
         point.clear();
     }
 
