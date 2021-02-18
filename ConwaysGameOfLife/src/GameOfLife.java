@@ -11,7 +11,6 @@ public class GameOfLife extends JFrame implements ActionListener {
     private Container cont;
     GridBagConstraints c;
 
-
     public static void main(String[] args) {
         JFrame game = new GameOfLife();
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,26 +24,41 @@ public class GameOfLife extends JFrame implements ActionListener {
         cont=getContentPane();
         cont.setLayout(new GridBagLayout());
         c= new GridBagConstraints();
+
+        //button
+        play_b=new JButton("PLAY");
+        play_b.addActionListener(this);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        cont.add(play_b,c);
+        stop_b=new JButton("STOP");
+        stop_b.addActionListener(this);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        cont.add(stop_b,c);
+        reset_b=new JButton("RESET");
+        reset_b.addActionListener(this);
+        c.gridx = 2;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        cont.add(reset_b,c);
+        instruction_b=new JButton("INSTRUCTION");
+        instruction_b.addActionListener(this);
+        c.gridx = 3;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        cont.add(instruction_b,c);
+        //board
         gameBoard = new GameBoard();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1.0; // fill the rest of the space
         c.weighty = 1.0;
+        c.gridwidth=4;
         c.fill = GridBagConstraints.BOTH;
         cont.add(gameBoard,c);
-        //button
-        play_b=new JButton("PLAY");
-        play_b.addActionListener(this);
-        cont.add(play_b);
-        stop_b=new JButton("STOP");
-        stop_b.addActionListener(this);
-        cont.add(stop_b);
-        reset_b=new JButton("RESET");
-        reset_b.addActionListener(this);
-        cont.add(reset_b);
-        instruction_b=new JButton("INSTRUCTION");
-        instruction_b.addActionListener(this);
-        cont.add(instruction_b);
         //set layout
 
 
@@ -65,9 +79,9 @@ public class GameOfLife extends JFrame implements ActionListener {
     }
     private void instruction() {
         JOptionPane.showMessageDialog(cont,"Any live cell with fewer than two live neighbours dies, as if by underpopulation.\n" +
-                "Any live cell with two or three live neighbours lives on to the next generation.\n" +
-                "Any live cell with more than three live neighbours dies, as if by overpopulation.\n" +
-                "Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.","Let's Go And Play Game.",
+                        "Any live cell with two or three live neighbours lives on to the next generation.\n" +
+                        "Any live cell with more than three live neighbours dies, as if by overpopulation.\n" +
+                        "Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.","Let's Go And Play Game.",
                 JOptionPane.PLAIN_MESSAGE);
     }
 
@@ -89,4 +103,3 @@ public class GameOfLife extends JFrame implements ActionListener {
 
 
 }
- 
