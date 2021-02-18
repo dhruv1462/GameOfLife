@@ -4,7 +4,7 @@ import javax.swing.*;
 
 
 public class GameOfLife extends JFrame implements ActionListener {
-    //private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(700, 500);
+
     private static final Dimension MINIMUM_FRAME_SIZE = new Dimension(450, 450);
     private GameBoard gameBoard;
     private Thread game;
