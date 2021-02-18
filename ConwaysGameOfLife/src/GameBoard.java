@@ -104,7 +104,7 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
         {
             addPoint(e);
         }
-        else
+        else if(SwingUtilities.isRightMouseButton(e))
             removePoint(e);
         }
     @Override
@@ -121,7 +121,13 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
     @Override
     public void mouseDragged(MouseEvent e) {
         // Mouse is being dragged, user wants multiple selections
-        addPoint(e);
+        if(SwingUtilities.isLeftMouseButton(e))
+        {
+            addPoint(e);
+        }
+        else if(SwingUtilities.isRightMouseButton(e))
+            removePoint(e);
+
     }
     @Override
     public void mouseMoved(MouseEvent e) {}
