@@ -77,7 +77,7 @@ public class GameOfLife extends JFrame implements ActionListener {
 
     }
 
-    public void setPlayAndStop(boolean play) {
+    private void setPlayAndStop(boolean play) {
         if (play) {
             play_b.setEnabled(false);
             stop_b.setEnabled(true);
