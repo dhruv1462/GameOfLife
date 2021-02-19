@@ -90,10 +90,12 @@ public class GameOfLife extends JFrame implements ActionListener {
         }
     }
     private void instruction() {
-        JOptionPane.showMessageDialog(cont,"Any live cell with fewer than two live neighbours dies, as if by underpopulation.\n" +
+        JOptionPane.showMessageDialog(cont,"Any live cell with fewer than two live neighbours dies," +
+                        " as if by underpopulation.\n" +
                         "Any live cell with two or three live neighbours lives on to the next generation.\n" +
                         "Any live cell with more than three live neighbours dies, as if by overpopulation.\n" +
-                        "Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.","Let's Go And Play Game.",
+                        "Any dead cell with exactly three live neighbours becomes a live cell," +
+                        " as if by reproduction.","Let's Go And Play Game.",
                 JOptionPane.PLAIN_MESSAGE);
     }
 
