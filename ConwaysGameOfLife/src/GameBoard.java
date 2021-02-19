@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public class GameBoard extends JPanel implements ComponentListener, MouseListener, MouseMotionListener, Runnable {
-    private Dimension gameBoardSize = null;
+    protected Dimension gameBoardSize = null;
     private static final int BLOCK_SIZE = 10;
-    private ArrayList<Point> point = new ArrayList<Point>(0);
+    protected ArrayList<Point> point = new ArrayList<Point>(0);
 
     public GameBoard() {
         // Add resizing listener
@@ -136,42 +136,16 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
     @Override
     public void run() {
         boolean[][] gameBoard = new boolean[gameBoardSize.width+2][gameBoardSize.height+2];
-        for (Point current : point) {
-            gameBoard[current.x+1][current.y+1] = true;
-        }
-        ArrayList<Point> survivingCells = new ArrayList<Point>(0);
-        // Iterate through the array, follow game of life rules
-        for (int i=1; i<gameBoard.length-1; i++) {
-            for (int j=1; j<gameBoard[0].length-1; j++) {
-                int surrounding = 0;
-                if (gameBoard[i-1][j-1]) { surrounding++; }
-                if (gameBoard[i+1][j-1]) { surrounding++; }
-                if (gameBoard[i-1][j+1]) { surrounding++; }
-                if (gameBoard[i][j-1])   { surrounding++; }
-                if (gameBoard[i-1][j])   { surrounding++; }
-                if (gameBoard[i][j+1])   { surrounding++; }
-                if (gameBoard[i+1][j+1]) { surrounding++; }
-                if (gameBoard[i+1][j])   { surrounding++; }
-
-                if (gameBoard[i][j]) {
-                    // Cell is alive, Can the cell live? (2-3)
-                    if ((surrounding == 2) || (surrounding == 3)) {
-                        survivingCells.add(new Point(i-1,j-1));
-                    }
-                } else {
-                    // Cell is dead, will the cell be given birth? (3)
-                    if (surrounding == 3) {
-                        survivingCells.add(new Point(i-1,j-1));
-                    }
-                }
-            }
-        }
+        CellGeneration generate = new CellGeneration();
+        ArrayList survivingCells= generate.evolve(gameBoard,point);
         resetBoard();
         point.addAll(survivingCells);
         repaint();
         try {
-            Thread.sleep(1000/3);
+            Thread.sleep(1000 / 3);
             run();
-        } catch (InterruptedException ex) {}
+        } catch (InterruptedException ex) {
+        }
+
     }
 }
