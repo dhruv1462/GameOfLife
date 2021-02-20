@@ -4,13 +4,21 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
+/**
+ * Represents the grid for the game and contains the methods to support user interaction.
+ * @author Aayush Rawal (arawal2)
+ * @author Dennis Polly Pynadath (dpynadat)
+ * @author Saurabh Rane (ssrane)
+ * @author Dhruv Dilipkumar Patel (dpatel81)
+ * @author Sameet Krishnakumar (skris114)
+ */
 public class GameBoard extends JPanel implements ComponentListener, MouseListener, MouseMotionListener, Runnable {
-    protected Dimension gameBoardSize = null;
-    private static final int BLOCK_SIZE = 10;
-    protected ArrayList<Point> point = new ArrayList<Point>(0);
+    protected Dimension gridSize = null;
+    private static final int CELL_SIZE = 10;
+    protected ArrayList<Point> cell = new ArrayList<Point>(0);
 
-    public GameBoard() {
-        // Add resizing listener
+    protected GameBoard() {
+
         addComponentListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -19,76 +27,78 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
 
     private void updateGrid() {
         ArrayList<Point> removeList = new ArrayList<Point>(0);
-        for (Point current : point) {
-            if ((current.x > gameBoardSize.width-1) || (current.y > gameBoardSize.height-1)) {
+        for (Point current : cell) {
+            if ((current.x > gridSize.width-1) || (current.y > gridSize.height-1)) {
 
                 removeList.add(current);
             }
         }
-        point.removeAll(removeList);
+        cell.removeAll(removeList);
         repaint();
     }
 
-    private void addPoint(int x, int y) {
-        if (!point.contains(new Point(x,y))) {
-            point.add(new Point(x,y));
+    private void addCell(int x, int y) {
+        if (!cell.contains(new Point(x,y))) {
+            cell.add(new Point(x,y));
         }
         repaint();
     }
 
-    private void addPoint(MouseEvent me) {
-        int x = me.getPoint().x/BLOCK_SIZE-1;
-        int y = me.getPoint().y/BLOCK_SIZE-1;
-        if ((x >= 0) && (x < gameBoardSize.width) && (y >= 0) && (y < gameBoardSize.height)) {
-            addPoint(x,y);
+    private void addCell(MouseEvent me) {
+        int x = me.getPoint().x/CELL_SIZE-1;
+        int y = me.getPoint().y/CELL_SIZE-1;
+        if ((x >= 0) && (x < gridSize.width) && (y >= 0) && (y < gridSize.height)) {
+            addCell(x,y);
         }
     }
 
-    private void removePoint(int x, int y) {
-        if(point.contains(new Point(x,y))) {
-            point.remove(new Point(x, y));
+    private void removeCell(int x, int y) {
+        if(cell.contains(new Point(x,y))) {
+            cell.remove(new Point(x, y));
         }
         repaint();
     }
-    private void removePoint(MouseEvent me) {
-        int x = me.getPoint().x/BLOCK_SIZE-1;
-        int y = me.getPoint().y/BLOCK_SIZE-1;
-        if ((x >= 0) && (x < gameBoardSize.width) && (y >= 0) && (y < gameBoardSize.height)) {
-            removePoint(x,y);
+    private void removeCell(MouseEvent me) {
+        int x = me.getPoint().x/CELL_SIZE-1;
+        int y = me.getPoint().y/CELL_SIZE-1;
+        if ((x >= 0) && (x < gridSize.width) && (y >= 0) && (y < gridSize.height)) {
+            removeCell(x,y);
         }
     }
 
 
     protected void resetBoard() {
-        point.clear();
+        cell.clear();
     }
 
 
 
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         try {
-            for (Point newPoint : point) {
-                // Draw new point
-                g.setColor(Color.YELLOW);
-                g.fillRect(BLOCK_SIZE + (BLOCK_SIZE*newPoint.x), BLOCK_SIZE + (BLOCK_SIZE*newPoint.y), BLOCK_SIZE, BLOCK_SIZE);
+            for (Point newPoint : cell) {
+                int xPos= CELL_SIZE + (CELL_SIZE*newPoint.x), yPos=CELL_SIZE + (CELL_SIZE*newPoint.y);
+                graphics.setColor(Color.YELLOW);
+                graphics.fillRect(xPos, yPos, CELL_SIZE, CELL_SIZE);
             }
         } catch (ConcurrentModificationException cme) {}
-        // Setup grid
-        g.setColor(Color.WHITE);
-        for (int i=0; i<=gameBoardSize.width; i++) {
-            g.drawLine(((i*BLOCK_SIZE)+BLOCK_SIZE), BLOCK_SIZE, (i*BLOCK_SIZE)+BLOCK_SIZE, BLOCK_SIZE + (BLOCK_SIZE*gameBoardSize.height));
+
+        graphics.setColor(Color.WHITE);
+        for (int i=0; i<=gridSize.width; i++) {
+            int xPos=(i*CELL_SIZE)+CELL_SIZE;
+            graphics.drawLine(xPos, CELL_SIZE, xPos, CELL_SIZE + (CELL_SIZE*gridSize.height));
         }
-        for (int i=0; i<=gameBoardSize.height; i++) {
-            g.drawLine(BLOCK_SIZE, ((i*BLOCK_SIZE)+BLOCK_SIZE), BLOCK_SIZE*(gameBoardSize.width+1), ((i*BLOCK_SIZE)+BLOCK_SIZE));
+        for (int i=0; i<=gridSize.height; i++) {
+            int yPos=(i*CELL_SIZE)+CELL_SIZE;
+            graphics.drawLine(CELL_SIZE, yPos, CELL_SIZE*(gridSize.width+1), yPos);
         }
     }
 
     @Override
     public void componentResized(ComponentEvent e) {
-        // Setup the game board size with proper boundries
-        gameBoardSize = new Dimension(getWidth()/BLOCK_SIZE-2, getHeight()/BLOCK_SIZE-2);
+
+        gridSize = new Dimension(getWidth()/CELL_SIZE-2, getHeight()/CELL_SIZE-2);
         updateGrid();
     }
     @Override
@@ -103,14 +113,14 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isLeftMouseButton(e))
         {
-            addPoint(e);
+            addCell(e);
         }
         else if(SwingUtilities.isRightMouseButton(e))
-            removePoint(e);
+            removeCell(e);
     }
     @Override
     public void mouseReleased(MouseEvent e) {
-        // Mouse was released (user clicked)
+
 
     }
     @Override
@@ -121,13 +131,13 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        // Mouse is being dragged, user wants multiple selections
+
         if(SwingUtilities.isLeftMouseButton(e))
         {
-            addPoint(e);
+            addCell(e);
         }
         else if(SwingUtilities.isRightMouseButton(e))
-            removePoint(e);
+            removeCell(e);
 
     }
     @Override
@@ -135,11 +145,11 @@ public class GameBoard extends JPanel implements ComponentListener, MouseListene
 
     @Override
     public void run() {
-        boolean[][] gameBoard = new boolean[gameBoardSize.width+2][gameBoardSize.height+2];
+        boolean[][] gameBoard = new boolean[gridSize.width+2][gridSize.height+2];
         CellGeneration generate = new CellGeneration();
-        ArrayList survivingCells= generate.evolve(gameBoard,point);
+        ArrayList survivingCells= generate.evolve(gameBoard,cell);
         resetBoard();
-        point.addAll(survivingCells);
+        cell.addAll(survivingCells);
         repaint();
         try {
             Thread.sleep(1000 / 3);
