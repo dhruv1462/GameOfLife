@@ -3,100 +3,115 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents GUI layout on window.
+ * @author Aayush Rawal (arawal2)
+ * @author Dennis Polly Pynadath (dpynadat)
+ * @author Saurabh Rane (ssrane)
+ * @author Dhruv Dilipkumar Patel (dpatel81)
+ * @author Sameet Krishnakumar (skris114)
+ */
+
 public class GameLayout extends JFrame implements ActionListener {
     private GameBoard gameBoard;
-    private Thread game;
-    private JButton play_b,stop_b,reset_b,instruction_b;
-    private Container cont;
-    GridBagConstraints c;
-    public GameLayout() {
+    private Thread timer;
+    private JButton playButton,stopButton,resetButton,instructionButton;
+    private Container container;
+    private GridBagConstraints grid;
 
-        cont = getContentPane();
-        cont.setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
-        //button
-        play_b=new JButton("PLAY");
-        play_b.addActionListener(this);
-        play_b.setBackground(Color.BLUE);
-        play_b.setForeground(Color.WHITE);
-        play_b.setFont(new Font("Arial", Font.BOLD, 20));
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0.5;
-        cont.add(play_b,c);
-        stop_b=new JButton("STOP");
-        stop_b.addActionListener(this);
-        stop_b.setBackground(Color.BLUE);
-        stop_b.setForeground(Color.WHITE);
-        stop_b.setFont(new Font("Arial", Font.BOLD, 20));
-        c.gridx = 1;
-        c.gridy = 1;
-        c.weightx = 0.5;
-        cont.add(stop_b,c);
-        reset_b=new JButton("RESET");
-        reset_b.addActionListener(this);
-        reset_b.setBackground(Color.BLUE);
-        reset_b.setForeground(Color.WHITE);
-        reset_b.setFont(new Font("Arial", Font.BOLD, 20));
-        c.gridx = 2;
-        c.gridy = 1;
-        c.weightx = 0.5;
-        cont.add(reset_b,c);
-        instruction_b=new JButton("INSTRUCTION");
-        instruction_b.addActionListener(this);
-        instruction_b.setBackground(Color.BLUE);
-        instruction_b.setForeground(Color.WHITE);
-        instruction_b.setFont(new Font("Arial", Font.BOLD, 20));
-        c.gridx = 3;
-        c.gridy = 1;
-        c.weightx = 0.5;
-        cont.add(instruction_b,c);
-        //board
+
+    protected GameLayout() {
+
+        container = getContentPane();
+        container.setLayout(new GridBagLayout());
+        
+        grid = new GridBagConstraints();
+        
+        playButton=new JButton("PLAY");
+        playButton.addActionListener(this);
+        playButton.setBackground(Color.BLUE);
+        playButton.setForeground(Color.WHITE);
+        playButton.setFont(new Font("Arial", Font.BOLD, 20));
+        grid.gridx = 0;
+        grid.gridy = 1;
+        grid.weightx = 0.5;
+        container.add(playButton,grid);
+        
+        stopButton=new JButton("STOP");
+        stopButton.addActionListener(this);
+        stopButton.setBackground(Color.BLUE);
+        stopButton.setForeground(Color.WHITE);
+        stopButton.setFont(new Font("Arial", Font.BOLD, 20));
+        grid.gridx = 1;
+        grid.gridy = 1;
+        grid.weightx = 0.5;
+        container.add(stopButton,grid);
+        
+        resetButton=new JButton("RESET");
+        resetButton.addActionListener(this);
+        resetButton.setBackground(Color.BLUE);
+        resetButton.setForeground(Color.WHITE);
+        resetButton.setFont(new Font("Arial", Font.BOLD, 20));
+        grid.gridx = 2;
+        grid.gridy = 1;
+        grid.weightx = 0.5;
+        container.add(resetButton,grid);
+        
+        instructionButton=new JButton("INSTRUCTION");
+        instructionButton.addActionListener(this);
+        instructionButton.setBackground(Color.BLUE);
+        instructionButton.setForeground(Color.WHITE);
+        instructionButton.setFont(new Font("Arial", Font.BOLD, 20));
+        grid.gridx = 3;
+        grid.gridy = 1;
+        grid.weightx = 0.5;
+        container.add(instructionButton,grid);
+        
         gameBoard = new GameBoard();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0; // fill the rest of the space
-        c.weighty = 1.0;
-        c.gridwidth=4;
-        c.fill = GridBagConstraints.BOTH;
-        cont.add(gameBoard,c);
-        //set layout
+        grid.gridx = 0;
+        grid.gridy = 0;
+        grid.weightx = 1.0;
+        grid.weighty = 1.0;
+        grid.gridwidth=4;
+        grid.fill = GridBagConstraints.BOTH;
+        container.add(gameBoard,grid);
 
 
     }
     private void setPlayAndStop(boolean play) {
         if (play) {
-            play_b.setEnabled(false);
-            stop_b.setEnabled(true);
-            game = new Thread(gameBoard);
-            game.start();
+            playButton.setEnabled(false);
+            stopButton.setEnabled(true);
+            timer = new Thread(gameBoard);
+            timer.start();
         } else {
-            play_b.setEnabled(true);
-            stop_b.setEnabled(false);
-            game.interrupt();
+            playButton.setEnabled(true);
+            stopButton.setEnabled(false);
+            timer.interrupt();
         }
     }
     private void instruction() {
-        JOptionPane.showMessageDialog(cont,"Any live cell with fewer than two live neighbours dies," +
+        JOptionPane.showMessageDialog(container,"Any live cell with fewer than two live neighbours dies," +
                         " as if by underpopulation.\n" +
                         "Any live cell with two or three live neighbours lives on to the next generation.\n" +
                         "Any live cell with more than three live neighbours dies, as if by overpopulation.\n" +
                         "Any dead cell with exactly three live neighbours becomes a live cell," +
-                        " as if by reproduction.","Let's Go And Play Game.",
+                        " as if by reproduction.","Let's Go And Play timer.",
                 JOptionPane.PLAIN_MESSAGE);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         System.out.println(ae);
-        if (ae.getSource().equals(reset_b)) {
+        if (ae.getSource().equals(resetButton)) {
             gameBoard.resetBoard();
             gameBoard.repaint();
-        } else if (ae.getSource().equals(play_b)) {
+        } else if (ae.getSource().equals(playButton)) {
             setPlayAndStop(true);
-        } else if (ae.getSource().equals(stop_b)) {
+        } else if (ae.getSource().equals(stopButton)) {
             setPlayAndStop(false);
-        } else if(ae.getSource().equals(instruction_b)){
+        } else if(ae.getSource().equals(instructionButton)){
             instruction();
         }
     }
